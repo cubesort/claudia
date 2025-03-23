@@ -1,16 +1,3 @@
-function saveOptions() {
-    const userInput = document.getElementById('user-input').value;
-    chrome.storage.sync.set({ userInput: userInput }, function () {
-        console.log('Options saved:', userInput);
-    });
-}
-
-function restoreOptions() {
-    chrome.storage.sync.get(['userInput'], function (result) {
-        document.getElementById('user-input').value = result.userInput || '';
-    });
-}
-
 document.addEventListener('DOMContentLoaded', function () {
     chrome.storage.sync.get(['ClaudiaApiKey'], function (result) {
         console.log('API key:', result.ClaudiaApiKey);
@@ -36,13 +23,28 @@ function initializePopup(apiKey) {
     submitButton.addEventListener('click', async function () {
         const inputText = userInput.value.trim();
         if (!inputText) {
-            responseArea.textContent = 'Please enter some text';
+            responseArea.textContent = 'Please ask a question.';
             return;
         }
 
         responseArea.textContent = 'Loading...';
 
         try {
+            const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+            const [{ result: pageContent }] = await chrome.scripting.executeScript({
+                target: { tabId: tab.id },
+                func: () => document.body.innerText,
+            });
+
+            const prompt = 'You are a helpful AI assistant analyzing webpage content. ' +
+                'Below is the content from the current webpage, followed by a user\'s question. ' +
+                'Focus on providing clear, concise answers based on the page content.' +
+                `Page content: <pageContent>${pageContent}</pageContent>. ` +
+                `User question: <userInput>${inputText}</userInput> ` +
+                'Please answer the question based on the page content above. ' +
+                'If the answer cannot be found in the page content, clearly state that.';
+
             const response = await fetch('https://api.anthropic.com/v1/messages', {
                 method: 'POST',
                 headers: {
@@ -55,14 +57,22 @@ function initializePopup(apiKey) {
                     model: 'claude-3-5-haiku-20241022',
                     messages: [{
                         role: 'user',
-                        content: inputText
+                        content: prompt
                     }],
                     max_tokens: 1024
                 })
             });
 
             const data = await response.json();
-            responseArea.textContent = JSON.stringify(data, null, 2);
+            if (data.content && data.content[0] && data.content[0].text) {
+                const responseText = data.content[0].text;
+                responseArea.innerHTML = responseText
+                    .split('\n')
+                    .map(line => line.trim() ? `<p>${line}</p>` : '<br>')
+                    .join('');
+            } else {
+                responseArea.textContent = 'Unexpected response.';
+            }
         } catch (error) {
             responseArea.textContent = 'Error: ' + error.message;
         }

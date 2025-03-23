@@ -5,7 +5,8 @@
   "description": "Ask Claude about current page.",
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+    "scripting"
   ],
   "host_permissions": [
     "https://api.anthropic.com/*"

@@ -6,27 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="popup.css">
     <title>Claudia</title>
-    <style>
-        body {
-            width: 300px;
-            padding: 10px;
-        }
-
-        #response-area {
-            margin-bottom: 10px;
-            min-height: 100px;
-            border: 1px solid #ccc;
-            padding: 5px;
-        }
-    </style>
 </head>
 
 <body>
     <div id="content">
+        <div class="header">
+            <h1>Claudia</h1>
+            <p>Ask Claude about current page</p>
+        </div>
         <div id="response-area"></div>
         <div id="input-section">
-            <textarea id="user-input" rows="4" style="width: 100%"></textarea>
-            <button id="submit-button">Submit</button>
+            <textarea id="user-input" placeholder="Type your question..." rows="4" style="width: 100%"></textarea>
+            <button id="submit-button">Ask Claude</button>
         </div>
     </div>
     <script src="popup.js"></script>
