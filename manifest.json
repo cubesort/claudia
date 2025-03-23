@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Claudia",
+  "version": "1.0",
+  "description": "Ask Claude about current page.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://api.anthropic.com/*"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "resources/icon.png",
+      "48": "resources/icon.png",
+      "128": "resources/icon.png"
+    }
+  },
+  "options_page": "options/options.html",
+  "icons": {
+    "16": "resources/icon.png",
+    "48": "resources/icon.png",
+    "128": "resources/icon.png"
+  }
+}
