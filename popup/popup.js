@@ -19,7 +19,7 @@ function initializePopup(apiKey) {
     const userInput = document.getElementById('user-input');
     const responseArea = document.getElementById('response-area');
 
-    submitButton.addEventListener('click', async function () {
+    async function handleSubmit() {
         const inputText = userInput.value.trim();
         if (!inputText) {
             responseArea.textContent = 'Please ask a question.';
@@ -85,6 +85,15 @@ function initializePopup(apiKey) {
             }
         } catch (error) {
             responseArea.textContent = 'Error: ' + error.message;
+        }
+    }
+
+    submitButton.addEventListener('click', handleSubmit);
+
+    userInput.addEventListener('keydown', async function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            await handleSubmit();
         }
     });
 }

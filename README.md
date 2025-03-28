@@ -4,10 +4,15 @@ Claudia is a Chromium extension that lets you talk to Claude about the current p
 
 ![](./resources/Screenshot.png "Claudia screenshot")
 
+## Features
+
+- Ask Clade about the current page. For example, ask it to summarize the current page or find specific information.
+- Page content is cached to save API costs.
+
 ## Installation
 
 1. Clone the repository or download and unzip the source code.
-2. Navigate to the extensions page. It’s `chrome://extensions/` in Chrome.
+2. Navigate to the extensions page, e.g. `chrome://extensions/`.
 3. Enable "Developer mode" from the top right corner.
 4. Click "Load unpacked" and select the directory of the extension.
 
