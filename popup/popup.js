@@ -50,12 +50,11 @@ function initializePopup(apiKey) {
                         {
                             type: "text",
                             text: 'You are a helpful AI assistant analyzing webpage content. ' +
-                                'Another system text will include the full content of the current ' +
-                                'webpage. A message will include the user\'s question. Focus ' +
-                                'on providing clear, concise answers based on the page content. ' +
-                                'Please answer the question based on the page content above. If ' +
-                                'the answer cannot be found in the page content, clearly state ' +
-                                'that.'
+                                'The full content of the webpage will be provided in a separate ' +
+                                'system prompt. The user question will be provided in a message ' +
+                                'prompt. Focus on providing clear, concise answers based on the ' +
+                                'webpage content. If the answer cannot be found in the webpage ' +
+                                'content, clearly state that.'
                         },
                         {
                             type: "text",
