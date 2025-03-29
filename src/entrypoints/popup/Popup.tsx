@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Message, getResponse } from "../../utils/api/anthropic";
 import "./Popup.css";
 
@@ -7,6 +7,7 @@ export default function Popup() {
   const [userInput, setUserInput] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const lastUserMessageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     browser.storage.local.get(["ClaudiaApiKey"]).then((result) => {
@@ -15,6 +16,12 @@ export default function Popup() {
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (lastUserMessageRef.current) {
+      lastUserMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,13 +88,16 @@ export default function Popup() {
       </div>
       <div className="messages-container">
         {messages.map((message, index) => (
-          <div key={index} className={`message ${message.role}`}>
+          <div
+            key={index}
+            className={`message ${message.role}`}
+            ref={
+              index === messages.length - 1 && message.role === "user" ? lastUserMessageRef : null
+            }>
             <div className="message-content">
-              <p>
-                {message.content
-                  .split("\n")
-                  .map((line, i) => (line.trim() ? <p key={i}>{line}</p> : <br key={i} />))}
-              </p>
+              {message.content
+                .split("\n")
+                .map((line, i) => (line.trim() ? <p key={i}>{line}</p> : <br key={i} />))}
             </div>
           </div>
         ))}
