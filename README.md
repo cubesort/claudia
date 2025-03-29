@@ -6,7 +6,8 @@ Claudia is a Chromium extension that lets you talk to Claude about the current p
 
 ## Features
 
-- Ask Clade about the current page. For example, ask it to summarize the current page or find specific information.
+- Ask Claude about the current page. For example, ask it to summarize the current page or find specific information.
+- Your API key is stored locally and all communications happen between your computer and Anthropic API.
 - Page content is cached to save API costs.
 
 ## Installation
@@ -27,13 +28,19 @@ Claudia is a Chromium extension that lets you talk to Claude about the current p
 
 ## Developer guide
 
-## Prerequisites
+### System prerequisites
 
 - Node >= v22
 
-## Development
+### Tech stack overview
+
+- TypeScript
+- React
+- WXT: build tool
+
+### Development
 
 1. Clone the repo and `cd claudia`.
 2. `npm install`.
 3. `npm run dev`.
-4. Manually load the extension from `./dist/chrome-mv3-dev`.
+4. Check out WXT [documentation](https://wxt.dev/guide/essentials/config/browser-startup.html#browser-startup) to customize development experience.
