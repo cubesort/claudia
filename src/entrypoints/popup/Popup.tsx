@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Message, getResponse } from '../../utils/api/anthropic';
 import './Popup.css';
 
 export default function Popup() {
     const [apiKey, setApiKey] = useState<string | null>(null);
     const [userInput, setUserInput] = useState<string>('');
-    const [response, setResponse] = useState<string>('');
+    const [messages, setMessages] = useState<Message[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -17,69 +18,40 @@ export default function Popup() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!userInput.trim()) {
-            setResponse('Please enter a question.');
-            return;
-        }
+        if (!userInput.trim()) return;
 
+        const newUserMessage: Message = {
+            role: 'user',
+            content: userInput,
+        };
+
+        setMessages((prev) => [...prev, newUserMessage]);
+        setUserInput('');
         setLoading(true);
-        setResponse('Loading...');
 
         try {
             const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
-            if (!tab.id) {
-                throw new Error('Unable to get the active tab.');
-            }
+            if (!tab.id) throw new Error('Unable to get the active tab.');
 
             const [{ result: pageContent }] = await browser.scripting.executeScript({
                 target: { tabId: tab.id },
                 func: () => document.body.innerText,
             });
 
-            const apiResponse = await fetch('https://api.anthropic.com/v1/messages', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': apiKey!,
-                    'anthropic-version': '2023-06-01',
-                    'anthropic-dangerous-direct-browser-access': 'true',
-                },
-                body: JSON.stringify({
-                    model: 'claude-3-5-haiku-20241022',
-                    system: [
-                        {
-                            type: "text",
-                            text: 'You are a helpful AI assistant analyzing webpage content. ' +
-                                'The full content of the webpage will be provided in a separate ' +
-                                'system prompt. The user question will be provided in a message ' +
-                                'prompt. Focus on providing clear, concise answers based on the ' +
-                                'webpage content. If the answer cannot be found in the webpage ' +
-                                'content, clearly state that.'
-                        },
-                        {
-                            type: "text",
-                            text: `Page content: <pageContent>${pageContent}</pageContent>`,
-                            cache_control: { "type": "ephemeral" }
-                        },
-                    ],
-                    messages: [
-                        {
-                            role: 'user',
-                            content: `User question: <userInput>${userInput}</userInput>`
-                        }
-                    ],
-                    max_tokens: 1024
-                }),
-            });
-
+            const apiResponse = await getResponse(apiKey!, [newUserMessage], pageContent);
             const data = await apiResponse.json();
-            const responseText = data?.content[0].text.split('\n')
-                .map((line: string) => line.trim() ? `<p>${line}</p>` : '<br>')
-                .join('');;
+            const assistantMessage: Message = {
+                role: 'assistant',
+                content: data?.content[0].text || 'No response.',
+            };
 
-            setResponse(responseText || 'No response.');
+            setMessages((prev) => [...prev, assistantMessage]);
         } catch (error) {
-            setResponse(`Error: ${(error as Error).message}`);
+            const errorMessage: Message = {
+                role: 'assistant',
+                content: `Error: ${(error as Error).message}`,
+            };
+            setMessages((prev) => [...prev, errorMessage]);
         } finally {
             setLoading(false);
         }
@@ -107,7 +79,28 @@ export default function Popup() {
                 <h1>Claudia</h1>
                 <p>Ask Claude about the current page</p>
             </div>
-            <div className="response-area" dangerouslySetInnerHTML={{ __html: response }} />
+            <div className="messages-container">
+                {messages.map((message, index) => (
+                    <div key={index} className={`message ${message.role}`}>
+                        <div className="message-content">
+                            <p>
+                                {message.content
+                                    .split('\n')
+                                    .map((line, i) =>
+                                        line.trim() ? <p key={i}>{line}</p> : <br key={i} />
+                                    )}
+                            </p>
+                        </div>
+                    </div>
+                ))}
+                {loading && (
+                    <div className="message assistant">
+                        <div className="message-content">
+                            <p>Thinking...</p>
+                        </div>
+                    </div>
+                )}
+            </div>
             <form className="input-section" onSubmit={handleSubmit}>
                 <textarea
                     className="user-input"
@@ -115,6 +108,7 @@ export default function Popup() {
                     onChange={(e) => setUserInput(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Type your question..."
+                    disabled={loading}
                 />
                 <button className="submit-button" type="submit" disabled={loading}>
                     Ask Claude

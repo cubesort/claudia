@@ -5,5 +5,5 @@ import Popup from './Popup.tsx';
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <Popup />
-    </React.StrictMode>,
+    </React.StrictMode>
 );
