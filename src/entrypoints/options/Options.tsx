@@ -21,6 +21,13 @@ export default function Options() {
         });
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSave(e);
+        }
+    };
+
     return (
         <div className="options-container">
             <h1>Claudia Options</h1>
@@ -31,6 +38,7 @@ export default function Options() {
                     name="apiKey"
                     value={apiKey}
                     onChange={(e) => setApiKey(e.target.value)}
+                    onKeyDown={handleKeyDown}
                 />
                 <button type="submit">Save</button>
             </form>

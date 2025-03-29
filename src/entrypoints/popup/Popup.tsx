@@ -73,11 +73,22 @@ export default function Popup() {
             });
 
             const data = await apiResponse.json();
-            setResponse(data?.content[0].text || 'No response received.');
+            const responseText = data?.content[0].text.split('\n')
+                .map((line: string) => line.trim() ? `<p>${line}</p>` : '<br>')
+                .join('');;
+
+            setResponse(responseText || 'No response.');
         } catch (error) {
             setResponse(`Error: ${(error as Error).message}`);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSubmit(e);
         }
     };
 
@@ -96,12 +107,13 @@ export default function Popup() {
                 <h1>Claudia</h1>
                 <p>Ask Claude about the current page</p>
             </div>
-            <div className="response-area">{response}</div>
+            <div className="response-area" dangerouslySetInnerHTML={{ __html: response }} />
             <form className="input-section" onSubmit={handleSubmit}>
                 <textarea
                     className="user-input"
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     placeholder="Type your question..."
                 />
                 <button className="submit-button" type="submit" disabled={loading}>
@@ -110,4 +122,4 @@ export default function Popup() {
             </form>
         </div>
     );
-};
+}

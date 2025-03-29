@@ -41,4 +41,4 @@ Claudia is a Chromium extension that lets you talk to Claude about the current p
 1. Clone the repo and `cd claudia`.
 2. `npm install`.
 3. `npm run dev`.
-4. Check out WXT [documentation](https://wxt.dev/guide/essentials/config/browser-startup.html#browser-startup) to customize development experience.
+4. Check out [WXT documentation](https://wxt.dev/guide/essentials/config/browser-startup.html#browser-startup) to customize development experience.
