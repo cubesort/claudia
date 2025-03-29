@@ -2,7 +2,7 @@
 
 Claudia is a Chromium extension that lets you talk to Claude about the current page.
 
-![](./resources/Screenshot.png "Claudia screenshot")
+![](./screenshot.png "Claudia screenshot")
 
 ## Features
 
@@ -11,13 +11,29 @@ Claudia is a Chromium extension that lets you talk to Claude about the current p
 
 ## Installation
 
-1. Clone the repository or download and unzip the source code.
-2. Navigate to the extensions page, e.g. `chrome://extensions/`.
-3. Enable "Developer mode" from the top right corner.
-4. Click "Load unpacked" and select the directory of the extension.
+1. Download the latest [release](https://github.com/cubesort/claudia/releases).
+2. Unzip the file.
+3. Navigate to your browser’s extensions page, e.g. `chrome://extensions/`.
+4. Enable "Developer mode" from the top right corner.
+5. Click "Load unpacked" and select the unzipped folder.
 
 ## Usage
 
 - Click on the extension icon in the toolbar.
 - It will ask you to enter an Anthropic API key in the first use.
 - Enter your API key and ask away!
+
+---
+
+## Developer guide
+
+## Prerequisites
+
+- Node >= v22
+
+## Development
+
+1. Clone the repo and `cd claudia`.
+2. `npm install`.
+3. `npm run dev`.
+4. Manually load the extension from `./dist/chrome-mv3-dev`.

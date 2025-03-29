@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const apiKeyInput = document.getElementById('apiKey');
     const status = document.getElementById('status');
 
-    chrome.storage.sync.get(['ClaudiaApiKey'], function (result) {
+    browser.storage.local.get(['ClaudiaApiKey']).then((result) => {
         if (result.ClaudiaApiKey) {
             apiKeyInput.value = result.ClaudiaApiKey;
         }
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     optionsForm.addEventListener('submit', function (e) {
         e.preventDefault();
         const apiKey = apiKeyInput.value;
-        chrome.storage.sync.set({ ClaudiaApiKey: apiKey }, function () {
+        browser.storage.local.set({ ClaudiaApiKey: apiKey }).then(() => {
             status.textContent = 'Options saved.';
             setTimeout(function () {
                 status.textContent = '';

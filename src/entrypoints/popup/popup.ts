@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
-    chrome.storage.sync.get(['ClaudiaApiKey'], function (result) {
+    browser.storage.local.get(['ClaudiaApiKey']).then((result) => {
         if (!result.ClaudiaApiKey) {
             document.getElementById('content').innerHTML = `
                 <p>Please set your API key.</p>
                 <button id="open-options">Open Options</button>
             `;
             document.getElementById('open-options').addEventListener('click', function () {
-                chrome.runtime.openOptionsPage();
+                browser.runtime.openOptionsPage();
             });
         } else {
             initializePopup(result.ClaudiaApiKey);
@@ -29,9 +29,9 @@ function initializePopup(apiKey) {
         responseArea.textContent = 'Loading...';
 
         try {
-            const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+            const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
 
-            const [{ result: pageContent }] = await chrome.scripting.executeScript({
+            const [{ result: pageContent }] = await browser.scripting.executeScript({
                 target: { tabId: tab.id },
                 func: () => document.body.innerText,
             });
