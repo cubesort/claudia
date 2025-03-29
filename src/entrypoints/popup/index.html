@@ -4,23 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="popup.css">
     <title>Claudia</title>
 </head>
 
 <body>
-    <div id="content">
-        <div class="header">
-            <h1>Claudia</h1>
-            <p>Ask Claude about the current page</p>
-        </div>
-        <div id="response-area"></div>
-        <div id="input-section">
-            <textarea id="user-input" placeholder="Type your question..."></textarea>
-            <button id="submit-button">Ask Claude</button>
-        </div>
-    </div>
-    <script type="module" src="popup.ts"></script>
+    <div id="root"></div>
+    <script type="module" src="main.tsx"></script>
 </body>
 
 </html>

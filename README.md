@@ -24,15 +24,13 @@ Claudia is a Chromium extension that lets you talk to Claude about the current p
 - It will ask you to enter an Anthropic API key in the first use.
 - Enter your API key and ask away!
 
----
-
 ## Developer guide
 
 ### System prerequisites
 
 - Node >= v22
 
-### Tech stack overview
+### Stack overview
 
 - TypeScript
 - React

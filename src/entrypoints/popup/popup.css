@@ -1,16 +1,15 @@
 body {
     width: 400px;
-    height: 500px;
     margin: 0;
     padding: 16px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     overflow: hidden;
 }
 
-#content {
+.popup-container {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    max-height: 400px;
 }
 
 .header {
@@ -31,7 +30,7 @@ body {
     font-size: 14px;
 }
 
-#response-area {
+.response-area {
     flex: 1 1 auto;
     margin: 12px 0;
     padding: 16px;
@@ -41,37 +40,38 @@ body {
     font-size: 14px;
     line-height: 1.6;
     color: #2c3e50;
+    box-sizing: border-box;
 }
 
-#response-area p {
+.response-area p {
     margin: 0 0 8px 0;
 }
 
-#response-area code {
+.response-area code {
     background-color: #e9ecef;
     padding: 2px 4px;
     border-radius: 4px;
     font-family: 'SF Mono', Monaco, Consolas, monospace;
 }
 
-#response-area pre {
+.response-area pre {
     background-color: #e9ecef;
     padding: 12px;
     border-radius: 6px;
     overflow-x: auto;
 }
 
-#input-section {
+.input-section {
     flex: 0 0 auto;
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-#user-input {
+.user-input {
     width: 100%;
-    min-height: 40px;
-    max-height: 120px;
+    height: 80px;
+    /* Fixed height for the textarea */
     padding: 12px 16px;
     border: 1px solid #e2e8f0;
     border-radius: 16px;
@@ -79,18 +79,19 @@ body {
     font-family: inherit;
     font-size: 14px;
     line-height: 1.5;
-    resize: vertical;
+    resize: none;
+    /* Prevent resizing */
     outline: none;
     transition: border-color 0.2s ease;
     box-sizing: border-box;
 }
 
-#user-input:focus {
+.user-input:focus {
     border-color: #3b82f6;
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
 
-#submit-button {
+.input-section button {
     align-self: flex-end;
     padding: 8px 20px;
     border: none;
@@ -103,10 +104,10 @@ body {
     transition: background-color 0.2s ease;
 }
 
-#submit-button:hover {
+.input-section button:hover {
     background-color: #2563eb;
 }
 
-#submit-button:active {
+.input-section button:active {
     background-color: #1d4ed8;
 }
