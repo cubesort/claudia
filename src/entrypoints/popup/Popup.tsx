@@ -40,13 +40,13 @@ export default function Popup() {
       const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
       if (!tab.id) throw new Error("Unable to get the active tab.");
 
-      const [{ result: pageContent }] = await browser.scripting.executeScript({
+      const [{ result: pageContent = "" }] = await browser.scripting.executeScript({
         target: { tabId: tab.id },
         func: () => document.body.innerText,
       });
 
-      const apiResponse = await getResponse(apiKey!, [newUserMessage], pageContent);
-      const data = await apiResponse.json();
+      const response = await getResponse(apiKey!, [...messages, newUserMessage], pageContent);
+      const data = await response.json();
       const assistantMessage: Message = {
         role: "assistant",
         content: data?.content[0].text || "No response.",
@@ -93,7 +93,8 @@ export default function Popup() {
             className={`message ${message.role}`}
             ref={
               index === messages.length - 1 && message.role === "user" ? lastUserMessageRef : null
-            }>
+            }
+          >
             <div className="message-content">
               {message.content
                 .split("\n")
