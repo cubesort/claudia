@@ -3,7 +3,7 @@ import { defineConfig } from "wxt";
 export default defineConfig({
   manifest: {
     name: "Claudia",
-    version: "0.3.0",
+    version: "0.4.0",
     description: "Ask Claude about the current page.",
     permissions: ["storage", "activeTab", "scripting"],
     host_permissions: ["https://api.anthropic.com/*"],

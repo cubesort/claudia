@@ -3,7 +3,32 @@ export interface Message {
   content: string;
 }
 
-export async function getResponse(apiKey: string, messages: Message[], pageContent: string) {
+export const CLAUDE_MODELS = {
+  claude_3_7_sonnet: {
+    name: "Claude 3.7 Sonnet",
+    apiString: "claude-3-7-sonnet-latest",
+  },
+
+  claude_3_5_haiku: {
+    name: "Claude 3.5 Haiku",
+    apiString: "claude-3-5-haiku-latest",
+  },
+  claude_3_5_sonnet_v2: {
+    name: "Claude 3.5 Sonnet",
+    apiString: "claude-3-5-sonnet-latest",
+  },
+  claude_3_opus: {
+    name: "Claude 3 Opus",
+    apiString: "claude-3-opus-latest",
+  },
+};
+
+export async function getResponse(
+  apiKey: string,
+  messages: Message[],
+  pageContent: string,
+  model: string,
+) {
   return fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -13,7 +38,7 @@ export async function getResponse(apiKey: string, messages: Message[], pageConte
       "anthropic-dangerous-direct-browser-access": "true",
     },
     body: JSON.stringify({
-      model: "claude-3-5-haiku-20241022",
+      model,
       system: [
         {
           type: "text",
@@ -60,7 +85,7 @@ const createApiMessages = (messages: Message[]) => {
     const isThirdToLast = index === messages.length - 3;
 
     const textMessage: TextMessage = {
-      role: role,
+      role,
       content: [
         {
           type: "text",

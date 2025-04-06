@@ -8,6 +8,7 @@ Claudia is a Chromium extension that lets you talk to Claude about the current p
 
 - Ask Claude about the current page. For example, ask it to summarize the current page or find specific information.
 - Conversation support. Ask it to expand on a point from the previous response.
+- Select from different models, including the latest reasoning model Claude 3.7 Sonnet.
 - Your API key is stored locally and all communications happen between your computer and Anthropic API.
 - Page content and conversation history are cached to save API costs.
 

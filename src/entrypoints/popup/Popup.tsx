@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Message, getResponse } from "../../utils/api/anthropic";
+import { Message, CLAUDE_MODELS, getResponse } from "../../utils/api/anthropic";
 import "./Popup.css";
 
 export default function Popup() {
@@ -7,6 +7,9 @@ export default function Popup() {
   const [userInput, setUserInput] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [selectedModel, setSelectedModel] = useState<string>(
+    CLAUDE_MODELS.claude_3_5_haiku.apiString,
+  );
   const lastUserMessageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,7 +48,12 @@ export default function Popup() {
         func: () => document.body.innerText,
       });
 
-      const response = await getResponse(apiKey!, [...messages, newUserMessage], pageContent);
+      const response = await getResponse(
+        apiKey!,
+        [...messages, newUserMessage],
+        pageContent,
+        selectedModel,
+      );
       const data = await response.json();
       const assistantMessage: Message = {
         role: "assistant",
@@ -119,9 +127,31 @@ export default function Popup() {
           placeholder="Type your question..."
           disabled={loading}
         />
-        <button className="submit-button" type="submit" disabled={loading}>
-          Ask Claude
-        </button>
+        <div className="input-row">
+          <select
+            className="model-selector"
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            disabled={loading}
+          >
+            {Object.keys(CLAUDE_MODELS).map((modelKey: string) => {
+              const model = CLAUDE_MODELS[modelKey as keyof typeof CLAUDE_MODELS];
+
+              return (
+                <option
+                  key={model.apiString}
+                  value={model.apiString}
+                  selected={selectedModel === model.apiString}
+                >
+                  {model.name}
+                </option>
+              );
+            })}
+          </select>
+          <button className="submit-button" type="submit" disabled={loading}>
+            Ask Claude
+          </button>
+        </div>
       </form>
     </div>
   );
