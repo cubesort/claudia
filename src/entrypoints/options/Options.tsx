@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import "./Options.css";
+import { useState, useEffect } from "react";
+import PrimaryButton from "~/components/PrimaryButton";
 
 export default function Options() {
   const [apiKey, setApiKey] = useState<string>("");
@@ -13,7 +13,7 @@ export default function Options() {
     });
   }, []);
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     browser.storage.local.set({ ClaudiaApiKey: apiKey }).then(() => {
       setStatus("Options saved.");
@@ -23,26 +23,31 @@ export default function Options() {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      e.preventDefault();
-      handleSave(e);
+      handleSubmit(e);
     }
   };
 
   return (
-    <div className="options-container">
-      <h1>Claudia Options</h1>
-      <form className="options-form" onSubmit={handleSave}>
-        <label htmlFor="apiKey">API Key:</label>
-        <input
-          id="apiKey"
-          name="apiKey"
-          value={apiKey}
-          onChange={(e) => setApiKey(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <button type="submit">Save</button>
-      </form>
-      {status && <div className="options-status">{status}</div>}
+    <div className="mx-auto max-w-2xl p-5 font-sans">
+      <div className="rounded-lg bg-white p-6 shadow-sm">
+        <h1 className="mb-6 text-2xl font-bold text-gray-800">Claudia Options</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="apiKey" className="mb-2 block font-medium text-gray-700">
+              API Key
+            </label>
+            <input
+              name="apiKey"
+              value={apiKey}
+              onChange={(e) => setApiKey(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-2 focus:outline-blue-500"
+            />
+          </div>
+          <PrimaryButton>Save</PrimaryButton>
+          {status && <div className="mt-4 rounded-md bg-green-50 p-3 text-green-700">{status}</div>}
+        </form>
+      </div>
     </div>
   );
 }
