@@ -36,6 +36,7 @@ Claudia is a Chromium extension that lets you talk to Claude about the current p
 
 - TypeScript
 - React
+- Tailwind CSS
 - WXT: build tool
 
 ### Development
