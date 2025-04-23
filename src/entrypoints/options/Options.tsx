@@ -28,12 +28,12 @@ export default function Options() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl p-5 font-sans">
-      <div className="rounded-lg bg-white p-6 shadow-sm">
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">Claudia Options</h1>
+    <div className="mx-auto max-w-[600px] font-sans">
+      <div className="m-6 rounded-lg p-6 shadow-sm">
+        <h1 className="text-2xl font-bold">Claudia Options</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="apiKey" className="mb-2 block font-medium text-gray-700">
+            <label htmlFor="apiKey" className="mb-2 mt-6 block">
               API Key
             </label>
             <input
@@ -41,7 +41,7 @@ export default function Options() {
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-2 focus:outline-blue-500"
+              className="w-full rounded-md border border-gray-300 p-2 focus:border-transparent focus:outline-2 focus:outline-blue-500"
             />
           </div>
           <PrimaryButton>Save</PrimaryButton>
