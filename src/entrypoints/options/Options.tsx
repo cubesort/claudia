@@ -28,12 +28,12 @@ export default function Options() {
   };
 
   return (
-    <div className="mx-auto max-w-[600px] font-sans text-[14px]">
+    <div className="mx-auto max-w-[600px] font-sans text-[14px] text-gray-800">
       <div className="m-6 rounded-lg p-6 shadow-sm">
         <h1 className="text-2xl font-bold">Claudia Options</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="apiKey" className="mb-2 mt-6 block">
+            <label htmlFor="apiKey" className="mt-6 mb-2 block">
               API Key
             </label>
             <input

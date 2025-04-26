@@ -80,7 +80,7 @@ export default function Popup() {
 
   if (!apiKey) {
     return (
-      <div className="w-[400px] space-y-4 p-3 font-sans text-[14px]">
+      <div className="w-[400px] space-y-4 p-3 font-sans text-[14px] text-gray-800">
         <p>Please set your API key in the options page.</p>
         <PrimaryButton onClick={() => browser.runtime.openOptionsPage()}>
           Open Options
@@ -90,17 +90,17 @@ export default function Popup() {
   }
 
   return (
-    <div className="flex max-h-[600px] w-[400px] flex-col p-3 font-sans text-[14px]">
+    <div className="flex max-h-[600px] w-[400px] flex-col p-3 font-sans text-[14px] text-gray-800">
       <div className="text-center">
         <h1 className="text-2xl font-bold">Claudia</h1>
-        <p className="text-gray-700">Ask Claude about the current page</p>
+        <p className="text-gray-600">Ask Claude about the current page</p>
       </div>
       <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-2 py-3">
         {messages.map((message, index) => (
           <div
             key={index}
             className={`rounded-md px-3 py-2 ${
-              message.role === "user" ? "self-end bg-blue-50" : "self-start bg-gray-100"
+              message.role === "user" ? "self-end bg-blue-500 text-white" : "self-start bg-gray-100"
             }`}
             ref={
               index === messages.length - 1 && message.role === "user" ? lastUserMessageRef : null
