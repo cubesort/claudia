@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   manifest: {
     name: "Claudia",
-    version: "0.4.0",
+    version: "0.4.1",
     description: "Ask Claude about the current page.",
     permissions: ["storage", "activeTab", "scripting"],
     host_permissions: ["https://api.anthropic.com/*"],

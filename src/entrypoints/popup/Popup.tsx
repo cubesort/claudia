@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Message, CLAUDE_MODELS, getResponse } from "../../utils/api/anthropic";
-import "./Popup.css";
+import { useState, useEffect, useRef } from "react";
+import { Message, CLAUDE_MODELS, getResponse } from "~/utils/api/anthropic";
+import PrimaryButton from "~/components/PrimaryButton";
 
 export default function Popup() {
   const [apiKey, setApiKey] = useState<string | null>(null);
@@ -74,36 +74,39 @@ export default function Popup() {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
       handleSubmit(e);
     }
   };
 
   if (!apiKey) {
     return (
-      <div className="popup-container">
+      <div className="w-[400px] space-y-4 p-3 font-sans text-[14px]">
         <p>Please set your API key in the options page.</p>
-        <button onClick={() => browser.runtime.openOptionsPage()}>Open Options</button>
+        <PrimaryButton onClick={() => browser.runtime.openOptionsPage()}>
+          Open Options
+        </PrimaryButton>
       </div>
     );
   }
 
   return (
-    <div className="popup-container">
-      <div className="header">
-        <h1>Claudia</h1>
-        <p>Ask Claude about the current page</p>
+    <div className="flex max-h-[600px] w-[400px] flex-col p-3 font-sans text-[14px]">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold">Claudia</h1>
+        <p className="text-gray-700">Ask Claude about the current page</p>
       </div>
-      <div className="messages-container">
+      <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-2 py-3">
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`message ${message.role}`}
+            className={`rounded-md px-3 py-2 ${
+              message.role === "user" ? "self-end bg-blue-50" : "self-start bg-gray-100"
+            }`}
             ref={
               index === messages.length - 1 && message.role === "user" ? lastUserMessageRef : null
             }
           >
-            <div className="message-content">
+            <div className="text-sm break-words whitespace-pre-wrap">
               {message.content
                 .split("\n")
                 .map((line, i) => (line.trim() ? <p key={i}>{line}</p> : <br key={i} />))}
@@ -111,25 +114,25 @@ export default function Popup() {
           </div>
         ))}
         {loading && (
-          <div className="message assistant">
-            <div className="message-content">
+          <div className="self-start rounded-md bg-gray-100 px-3 py-2">
+            <div className="text-sm break-words whitespace-pre-wrap">
               <p>Thinking...</p>
             </div>
           </div>
         )}
       </div>
-      <form className="input-section" onSubmit={handleSubmit}>
+      <form className="border-t border-gray-300 pt-4" onSubmit={handleSubmit}>
         <textarea
-          className="user-input"
+          className="h-[60px] w-full resize-none rounded-md border border-gray-300 p-2 focus:border-transparent focus:outline-2 focus:outline-blue-500 disabled:bg-gray-50"
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Type your question..."
           disabled={loading}
         />
-        <div className="input-row">
+        <div className="mt-2 flex justify-end gap-3">
           <select
-            className="model-selector"
+            className="cursor-pointer rounded border border-r-8 border-transparent p-2 outline outline-gray-300 focus:outline-2 focus:outline-blue-500 disabled:bg-gray-50"
             value={selectedModel}
             onChange={(e) => setSelectedModel(e.target.value)}
             disabled={loading}
@@ -148,9 +151,9 @@ export default function Popup() {
               );
             })}
           </select>
-          <button className="submit-button" type="submit" disabled={loading}>
+          <PrimaryButton type="submit" disabled={loading}>
             Ask Claude
-          </button>
+          </PrimaryButton>
         </div>
       </form>
     </div>

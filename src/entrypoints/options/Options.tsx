@@ -28,7 +28,7 @@ export default function Options() {
   };
 
   return (
-    <div className="mx-auto max-w-[600px] font-sans">
+    <div className="mx-auto max-w-[600px] font-sans text-[14px]">
       <div className="m-6 rounded-lg p-6 shadow-sm">
         <h1 className="text-2xl font-bold">Claudia Options</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
